@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Precios de Ingredientes</title>
+</head>
+<body>
+    <h1>Lista de Precios de Ingredientes</h1>
+
+    <div id="ingredientPrices">
+        <h2>Ingrese los precios de los ingredientes:</h2>
+        <ul>
+            <li>Acorn: <input type="number" id="AcornPrice"></li>
+            <li>Apple: <input type="number" id="ApplePrice"></li>
+ 	    <li>Banana: <input type="number" id="BananaPrice"></li>
+            <!-- Agrega los demás ingredientes aquí -->
+        </ul>
+    </div>
+
+    <button onclick="agregarPrecios()">Agregar Precios</button>
+
+    <div id="priceList">
+        <h2>Precios Agregados:</h2>
+        <ul id="listItems"></ul>
+    </div>
+
+    <script>
+        // Datos de ejemplo para el cálculo
+        var datosItems = {
+            "Acorn": { costoPorPlot: 24000, promedioUnidadesPorPlot: 27, precioDeItem: 1000 },
+            "Apple": { costoPorPlot: 3700, promedioUnidadesPorPlot: 14, precioDeItem: 500 },
+	    "Banana": { costoPorPlot: 12000, promedioUnidadesPorPlot: 27, precioDeItem: 500 },
+
+            // Agrega los demás ingredientes aquí
+        };
+
+        function agregarPrecios() {
+            var listaPrecios = document.getElementById("listItems");
+
+            // Limpiar la lista de precios antes de agregar nuevos elementos
+            listaPrecios.innerHTML = "";
+
+            // Iterar sobre los ingredientes y agregar los precios ingresados a la lista
+            Object.keys(datosItems).forEach(function(item) {
+                var precioInput = document.getElementById(item + "Price");
+                var precio = parseFloat(precioInput.value);
+                if (!isNaN(precio)) {
+                    var listItem = document.createElement("li");
+                    listItem.textContent = item + ": $" + precio.toFixed(2);
+
+                    // Calcular el costo por unidad
+                    var costoPorUnidad = datosItems[item].costoPorPlot / datosItems[item].promedioUnidadesPorPlot;
+
+                    // Calcular el profit total como porcentaje
+                    var profitTotal = (precio / costoPorUnidad - 1) * 100;
+                    var profitTotalInfo = document.createElement("span");
+                    profitTotalInfo.textContent = " | Profit Total: " + profitTotal.toFixed(2) + "%";
+                    listItem.appendChild(profitTotalInfo);
+
+                    listaPrecios.appendChild(listItem);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
